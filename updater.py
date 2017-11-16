@@ -1,43 +1,37 @@
 import os
 import base64
 import subprocess
-from utils import bcolors
+from helper import bcolors
 from github import Github, GithubException
+from constants import *
 
 BASE_DIR = os.path.dirname(__file__)
-OFFICIAL_TEST_DIR = ".test/official/"
-OFFICIAL_TEST_DIR_REPO = "projects/proj3_wan_optimizer/tests"
-CUSTOM_TEST_DIR = ".test/custom"
-CUSTOM_TEST_DIR_REPO = "custom_tests"
 
-OFFICIAL_TESTS = {
-    'simple_tests': ['send_less_than_one_block', 'send_exactly_one_block', 'send_exactly_one_block_both_directions'],
-    'test_module': ['send_one_file', 'send_multiple_files', 'send_image_file'],
-}
-
-def get_official_tests():
+def get_official_tests(username, password):
     print(bcolors.OKBLUE + "Getting official tests." + bcolors.ENDC)
-    github = Github("orkun1675", "Nukro5761")
-    organization = github.get_organization("NetSys")
-    repository = organization.get_repo("cs168fall17_student")
+    github = Github(username, password)
+    organization = github.get_organization(OFFICIAL_REPO_ORG)
+    repository = organization.get_repo(OFFICIAL_REPO_NAME)
     if not create_test_directory(os.path.join(BASE_DIR, OFFICIAL_TEST_DIR), "official"):
-        return
-    result = download_directory(repository, OFFICIAL_TEST_DIR_REPO)
+        return False
+    result = download_directory(repository, OFFICIAL_REPO_DIR, OFFICIAL_TEST_DIR)
     if not result:
-        return
+        return False
     print(bcolors.OKGREEN + "Official tests fetched from GitHub. ({} new, {} updated)".format(*result) + bcolors.ENDC)
+    return True
 
-def get_custom_tests():
+def get_custom_tests(username, password):
     print(bcolors.OKBLUE + "Getting custom (student built) tests." + bcolors.ENDC)
-    github = Github("orkun1675", "Nukro5761")
-    organization = github.get_organization("NetSys")
-    repository = organization.get_repo("cs168fall17_student")
+    github = Github(username, password)
+    organization = github.get_user(CUSTOM_REPO_USER)
+    repository = organization.get_repo(CUSTOM_REPO_NAME)
     if not create_test_directory(os.path.join(BASE_DIR, CUSTOM_TEST_DIR), "custom"):
         return
-    result = download_directory(repository, CUSTOM_TEST_DIR_REPO)
+    result = download_directory(repository, CUSTOM_REPO_DIR, CUSTOM_TEST_DIR)
     if not result:
         return
     print(bcolors.OKGREEN + "Custom tests fetched from GitHub. ({} new, {} updated)".format(*result) + bcolors.ENDC)
+    return True
 
 def create_test_directory(full_path, definition):
     if not os.path.exists(full_path):
@@ -50,20 +44,22 @@ def create_test_directory(full_path, definition):
     return True
 
 def get_git_sha_of_file(file_path):
-    result = subprocess.Popen("git hash-object " + file_path, shell=True, stdout=subprocess.PIPE).stdout.read().strip()
-    if "fatal" in result:
+    git_command = ["git", "hash-object", file_path]
+    sp = subprocess.Popen(git_command, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    out, err = sp.communicate()
+    if err:
         return None
-    return result
+    return out.strip()
 
-def download_directory(repository, directory_path):
+def download_directory(repository, directory_path, local_path):
     new_file_count, updated_file_count = 0, 0
     contents = repository.get_dir_contents(directory_path)
     for content in contents:
         if content.type == 'dir':
-            download_directory(repository, content.path)
+            download_directory(repository, content.path, local_path)
         else:
             try:
-                file_path = os.path.join(BASE_DIR, OFFICIAL_TEST_DIR + content.name)
+                file_path = os.path.join(BASE_DIR, local_path + content.name)
                 file_sha = get_git_sha_of_file(file_path)
                 if file_sha is None:
                     new_file_count += 1
