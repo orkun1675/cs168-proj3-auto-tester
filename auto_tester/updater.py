@@ -54,6 +54,7 @@ def get_git_sha_of_file(file_path):
 def download_directory(repository, directory_path, local_path):
     new_file_count, updated_file_count = 0, 0
     contents = repository.get_dir_contents(directory_path)
+    delete_extra_files(local_path, [content.name for content in contents if content.type != 'dir'])
     for content in contents:
         if content.type == 'dir':
             download_directory(repository, content.path, local_path)
@@ -74,4 +75,16 @@ def download_directory(repository, directory_path, local_path):
             except (GithubException, IOError) as exc:
                 print(bcolors.FAIL + 'Error downloading file {}: {}'.format(content.path, exc) + bcolors.ENDC)
                 return False
-    return new_file_count, updated_file_count 
+    return new_file_count, updated_file_count
+
+def delete_extra_files(local_path, file_names):
+    delete_counter = 0
+    dir_path = os.path.join(BASE_DIR, local_path)
+    for file_name in os.listdir(dir_path):
+        file_path = os.path.join(dir_path, file_name)
+        if os.path.isfile(file_path):
+            if not file_name.endswith(".pyc") and file_name not in file_names:
+                os.remove(file_path)
+                delete_counter += 1
+    if delete_counter > 0:
+        print("{} old test file(s) deleted from {}.".format(delete_counter, local_path))

@@ -9,7 +9,7 @@ from constants import *
 
 BASE_DIR = os.path.dirname(os.path.realpath(__file__))
 
-if __name__ == "__main__":
+def main():
     print(bcolors.BOLD + bcolors.HEADER + "=== {} ===".format(APP_DESCRIPTION) + bcolors.ENDC)
 
     parser = argparse.ArgumentParser(description=APP_DESCRIPTION)
@@ -64,8 +64,6 @@ if __name__ == "__main__":
 
     try:
         custom_test_dir = os.path.join(BASE_DIR, CUSTOM_TEST_DIR)
-        print BASE_DIR
-        print custom_test_dir
         os.chdir(custom_test_dir)
     except Exception as exc:
         print(bcolors.FAIL + 'Could not switch to custom test directory {}: {}'.format(custom_test_dir, exc) + bcolors.ENDC)
@@ -78,3 +76,6 @@ if __name__ == "__main__":
             os.chdir(saved_path)
         except Exception:
             pass
+
+if __name__ == '__main__':
+    main()
