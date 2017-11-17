@@ -7,6 +7,8 @@ import getpass
 from helper import bcolors
 from constants import *
 
+BASE_DIR = os.path.dirname(os.path.realpath(__file__))
+
 if __name__ == "__main__":
     print(bcolors.BOLD + bcolors.HEADER + "=== {} ===".format(APP_DESCRIPTION) + bcolors.ENDC)
 
@@ -28,6 +30,7 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     if args.update:
+        print("In order to download tests using the GitHub API we need your credentials.")
         username = raw_input("GitHub username/email: ")
         password = getpass.getpass(prompt='GitHub password: ')
         success = updater.get_official_tests(username, password)
@@ -58,6 +61,16 @@ if __name__ == "__main__":
 
     executer.delete_log_file()
     executer.run_official(middlebox_module_name, testing_part_1)
+
+    try:
+        custom_test_dir = os.path.join(BASE_DIR, CUSTOM_TEST_DIR)
+        print BASE_DIR
+        print custom_test_dir
+        os.chdir(custom_test_dir)
+    except Exception as exc:
+        print(bcolors.FAIL + 'Could not switch to custom test directory {}: {}'.format(custom_test_dir, exc) + bcolors.ENDC)
+        sys.exit()
+    
     executer.run_custom(middlebox_module_name, testing_part_1)
 
     if saved_path:
