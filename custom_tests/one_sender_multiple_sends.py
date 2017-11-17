@@ -1,3 +1,5 @@
+# Author: by Nicole Rasquinha
+
 import os
 import sys
 

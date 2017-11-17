@@ -56,6 +56,7 @@ if __name__ == "__main__":
             print(bcolors.FAIL + 'Could not switch to project directory {}: {}'.format(project_dir, exc) + bcolors.ENDC)
             sys.exit()
 
+    executer.delete_log_file()
     executer.run_official(middlebox_module_name, testing_part_1)
     executer.run_custom(middlebox_module_name, testing_part_1)
 

@@ -2,6 +2,8 @@ APP_NAME = "Auto Tester"
 APP_VERSION = "0.1"
 APP_DESCRIPTION = "{} v{}".format(APP_NAME, APP_VERSION)
 
+LOG_FILE = "auto_tester.log"
+
 OFFICIAL_REPO_ORG = "NetSys"
 OFFICIAL_REPO_NAME = "cs168fall17_student"
 OFFICIAL_REPO_DIR = "projects/proj3_wan_optimizer/tests"
