@@ -76,3 +76,4 @@ def multiple_clients_multiple_files(middlebox_module, testing_part_1):
             "received did not match the file sent. Files received correctly:" +
             " {} and files sent are: {}\n".format(
                 total_count,
+                sent_files))
