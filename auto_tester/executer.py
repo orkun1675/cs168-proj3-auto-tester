@@ -61,7 +61,7 @@ def run_tests_in_dir(middlebox_module_name, testing_part_1, test_dir):
             total_tests += 1
 
     if passed_tests == total_tests:
-        print(bcolors.OKGREEN + "Success! Passed {}/{} tests. StdOut/StdErr saved to {}.".format(passed_tests, total_tests, LOG_FILE) + bcolors.ENDC)
+        print(bcolors.OKGREEN + "Success! Passed {}/{} tests. StdOut/StdErr saved to '{}'.".format(passed_tests, total_tests, LOG_FILE) + bcolors.ENDC)
     else:
         print(bcolors.WARNING + "Failed {}/{} tests. Please see '{}' for details.".format(total_tests - passed_tests, total_tests, LOG_FILE) + bcolors.ENDC)
 
