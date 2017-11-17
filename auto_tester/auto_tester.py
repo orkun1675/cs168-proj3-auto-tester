@@ -13,19 +13,27 @@ def main():
 
     parser = argparse.ArgumentParser(description=APP_DESCRIPTION)
     parser.add_argument(
-        "--project-dir", dest="project_dir",
-        type=str, action="store",
-        help="If your project3 files are in a different directory you can specify it here."
-    )
-    parser.add_argument(
-        "--part", dest="part",
-        required=True, type=int, action="store",
+        "--part",
+        dest="part",
+        required=True,
+        type=int,
         help="Which WanOptimizer to test; use '1' for simple_wan_optimizer and '2' for lbfs_wan_optimizer.")
     parser.add_argument(
         "--update",
         dest="update",
         action="store_true",
         help="Fetch the newest official and custom tests from GitHub.")
+    parser.add_argument(
+        "--project-dir",
+        dest="project_dir",
+        type=str,
+        help="If your project3 files are in a different directory you can specify it here."
+    )
+    parser.add_argument(
+        "--tests",
+        dest="tests",
+        nargs='*',
+        help="Specify the names of tests you want to run (instead of running all tests).")
     parser.add_argument(
         "--colorless",
         dest="colorless",
@@ -74,8 +82,13 @@ def main():
     else:
         sys.path.append(BASE_DIR)
 
+    if args.tests is not None:
+        for i in range(len(args.tests)):
+            if args.tests[i].endswith(".py"):
+                args.tests[i] = args.tests[i][:-3]
+
     executer.clear_log_file()
-    executer.run_official(middlebox_module_name, testing_part_1)
+    executer.run_official(middlebox_module_name, testing_part_1, args.tests)
 
     try:
         custom_test_dir = os.path.join(BASE_DIR, CUSTOM_TEST_DIR)
@@ -84,7 +97,7 @@ def main():
         print(bcolors.FAIL + 'Could not switch to custom test directory {}: {}'.format(custom_test_dir, exc) + bcolors.ENDC)
         sys.exit()
     
-    executer.run_custom(middlebox_module_name, testing_part_1)
+    executer.run_custom(middlebox_module_name, testing_part_1, args.tests)
 
     if saved_path:
         try:

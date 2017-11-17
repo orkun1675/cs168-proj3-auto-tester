@@ -6,7 +6,7 @@ import sys
 import client
 import wan
 
-def data_reduction_suffixed_files(middlebox_module, testing_part_1):
+def data_reduction_suffixed_files_2(middlebox_module, testing_part_1):
     """ Tests that the WAN optimizer reduces data sent over the WAN.
 
     This test sends a file and then sends the same file with extra data

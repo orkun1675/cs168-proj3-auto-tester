@@ -14,21 +14,21 @@ def clear_log_file():
     except OSError:
         pass
 
-def run_official(middlebox_module_name, testing_part_1):
+def run_official(middlebox_module_name, testing_part_1, specified_test_names):
     if not check_tests_exists(OFFICIAL_TEST_DIR, "official"):
         return
     print(bcolors.OKBLUE + "Running all official test cases against your code..." + bcolors.ENDC)
     test_dir = os.path.join(BASE_DIR, OFFICIAL_TEST_DIR)
-    run_tests_in_dir(middlebox_module_name, testing_part_1, test_dir)
+    run_tests_in_dir(middlebox_module_name, testing_part_1, test_dir, specified_test_names)
     
-def run_custom(middlebox_module_name, testing_part_1):
+def run_custom(middlebox_module_name, testing_part_1, specified_test_names):
     if not check_tests_exists(CUSTOM_TEST_DIR, "custom"):
         return
     print(bcolors.OKBLUE + "Running all custom (student built) test cases against your code..." + bcolors.ENDC)
     test_dir = os.path.join(BASE_DIR, CUSTOM_TEST_DIR)
-    run_tests_in_dir(middlebox_module_name, testing_part_1, test_dir)
+    run_tests_in_dir(middlebox_module_name, testing_part_1, test_dir, specified_test_names)
     
-def run_tests_in_dir(middlebox_module_name, testing_part_1, test_dir):
+def run_tests_in_dir(middlebox_module_name, testing_part_1, test_dir, specified_test_names):
     total_tests, passed_tests = 0, 0
     try:
         middlebox_module = __import__(middlebox_module_name)
@@ -52,6 +52,8 @@ def run_tests_in_dir(middlebox_module_name, testing_part_1, test_dir):
                 continue
             test_func_arg_names = test_func.__code__.co_varnames[:2]
             if test_func_arg_names[0] not in TEST_FUNC_ARG_0 or test_func_arg_names[1] not in TEST_FUNC_ARG_1:
+                continue
+            if specified_test_names is not None and test_func_name not in specified_test_names:
                 continue
             passed_tests += run_test(
                 test_func,
