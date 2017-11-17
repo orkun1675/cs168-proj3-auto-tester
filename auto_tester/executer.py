@@ -5,12 +5,12 @@ import traceback
 from StringIO import StringIO
 from helper import bcolors
 from constants import *
+from auto_tester import BASE_DIR
 
-BASE_DIR = os.path.dirname(__file__)
-
-def delete_log_file():
+def clear_log_file():
     try:
-        os.remove(os.path.join(BASE_DIR, LOG_FILE))
+        with open(os.path.join(BASE_DIR, LOG_FILE), "w+") as log_file:
+            log_file.truncate()
     except OSError:
         pass
 
@@ -30,7 +30,11 @@ def run_custom(middlebox_module_name, testing_part_1):
     
 def run_tests_in_dir(middlebox_module_name, testing_part_1, test_dir):
     total_tests, passed_tests = 0, 0
-    middlebox_module = __import__(middlebox_module_name)
+    try:
+        middlebox_module = __import__(middlebox_module_name)
+    except ImportError as exc:
+        print(bcolors.FAIL + "Could not import '{}'. Are you running this script from the project directory? If not, make sure to specify where your project is using the '--project-dir' flag.".format(middlebox_module_name) + bcolors.ENDC)
+        return
     sys.path.append(test_dir)
     test_dir_files = [f for f in os.listdir(test_dir) if os.path.isfile(os.path.join(test_dir, f)) and f.endswith('.py')]
 
@@ -57,14 +61,13 @@ def run_tests_in_dir(middlebox_module_name, testing_part_1, test_dir):
             total_tests += 1
 
     if passed_tests == total_tests:
-        print(bcolors.OKGREEN + "Success! Passed {}/{} tests.".format(passed_tests, total_tests) + bcolors.ENDC)
+        print(bcolors.OKGREEN + "Success! Passed {}/{} tests. StdOut/StdErr saved to {}.".format(passed_tests, total_tests, LOG_FILE) + bcolors.ENDC)
     else:
         print(bcolors.WARNING + "Failed {}/{} tests. Please see '{}' for details.".format(total_tests - passed_tests, total_tests, LOG_FILE) + bcolors.ENDC)
 
 def check_tests_exists(TEST_DIR, definition):
     dir_path = os.path.join(BASE_DIR, TEST_DIR)
-    num_files = len(os.listdir(dir_path))
-    if num_files < 1:
+    if not os.path.exists(dir_path) or len(os.listdir(dir_path)) < 1:
         print(bcolors.WARNING + "No {} tests exist. Check for updates using the '--update' flag.".format(definition) + bcolors.ENDC)
         return False
     return True    

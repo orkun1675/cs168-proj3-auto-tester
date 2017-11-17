@@ -1,17 +1,22 @@
 import os
 import base64
+import errno
 import subprocess
 from helper import bcolors
 from github import Github, GithubException
 from constants import *
 
-BASE_DIR = os.path.dirname(__file__)
+from auto_tester import BASE_DIR
 
 def get_official_tests(username, password):
     print(bcolors.OKBLUE + "Getting official tests." + bcolors.ENDC)
-    github = Github(username, password)
-    organization = github.get_organization(OFFICIAL_REPO_ORG)
-    repository = organization.get_repo(OFFICIAL_REPO_NAME)
+    try:
+        github = Github(username, password)
+        organization = github.get_organization(OFFICIAL_REPO_ORG)
+        repository = organization.get_repo(OFFICIAL_REPO_NAME)
+    except GithubException as exc:
+        print(bcolors.FAIL + 'Error authenticating with the GitHub API: {}'.format(exc) + bcolors.ENDC)
+        return False
     if not create_test_directory(os.path.join(BASE_DIR, OFFICIAL_TEST_DIR), "official"):
         return False
     result = download_directory(repository, OFFICIAL_REPO_DIR, OFFICIAL_TEST_DIR)
@@ -22,9 +27,13 @@ def get_official_tests(username, password):
 
 def get_custom_tests(username, password):
     print(bcolors.OKBLUE + "Getting custom (student built) tests." + bcolors.ENDC)
-    github = Github(username, password)
-    organization = github.get_user(CUSTOM_REPO_USER)
-    repository = organization.get_repo(CUSTOM_REPO_NAME)
+    try:
+        github = Github(username, password)
+        organization = github.get_user(CUSTOM_REPO_USER)
+        repository = organization.get_repo(CUSTOM_REPO_NAME)
+    except GithubException as exc:
+        print(bcolors.FAIL + 'Error authenticating with the GitHub API: {}'.format(exc) + bcolors.ENDC)
+        return False
     if not create_test_directory(os.path.join(BASE_DIR, CUSTOM_TEST_DIR), "custom"):
         return
     result = download_directory(repository, CUSTOM_REPO_DIR, CUSTOM_TEST_DIR)
