@@ -7,3 +7,14 @@ class bcolors:
     ENDC = '\033[0m'
     BOLD = '\033[1m'
     UNDERLINE = '\033[4m'
+
+    @classmethod
+    def disable(cls):
+        cls.HEADER = ''
+        cls.OKBLUE = ''
+        cls.OKGREEN = ''
+        cls.WARNING = ''
+        cls.FAIL = ''
+        cls.ENDC = ''
+        cls.BOLD = ''
+        cls.UNDERLINE = ''

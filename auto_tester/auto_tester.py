@@ -9,7 +9,6 @@ from helper import bcolors
 from constants import *
 
 def main():
-    print(bcolors.BOLD + bcolors.HEADER + "=== {} ===".format(APP_DESCRIPTION) + bcolors.ENDC)
     BASE_DIR = os.path.split(os.path.split(os.path.abspath(__file__))[0])[0]
 
     parser = argparse.ArgumentParser(description=APP_DESCRIPTION)
@@ -27,7 +26,16 @@ def main():
         dest="update",
         action="store_true",
         help="Fetch the newest official and custom tests from GitHub.")
+    parser.add_argument(
+        "--colorless",
+        dest="colorless",
+        action="store_true",
+        help="Disable the use of color codes when printing to the console.")
     args = parser.parse_args()
+
+    if args.colorless:
+        bcolors.disable()
+    print(bcolors.BOLD + bcolors.HEADER + "=== {} ===".format(APP_DESCRIPTION) + bcolors.ENDC)
 
     if args.update:
         print("In order to download tests using the GitHub API we need your credentials. These will not be saved to disk.")

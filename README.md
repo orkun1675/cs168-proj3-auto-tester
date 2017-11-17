@@ -11,11 +11,13 @@ This simple python executable helps you test your project before submitting it. 
 
 Here are a list of flags you can pass in when running the tester.
 
-| Flag          | Values           | Required  |
-| ------------- |:-------------:| -----:|
-| `--part`        | `1` or `2` | Yes |
-| `--update`      | None      |   only if running for first time |
-| `--project-dir` | directory string      |    only if running from different directory |
+| Flag            | Values            | Required                                 |
+| -------------   | :-------------:   | -----:                                   |
+| `-h`            | None              | No                                       |
+| `--part`        | `1` or `2`        | Yes                                      |
+| `--update`      | None              | only if running for first time           |
+| `--project-dir` | directory string  | only if running from different directory |
+| `--colorless`   | None              | No                                       |
 
 
 ## Contribution
