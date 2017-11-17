@@ -10,7 +10,7 @@ from constants import *
 
 def main():
     print(bcolors.BOLD + bcolors.HEADER + "=== {} ===".format(APP_DESCRIPTION) + bcolors.ENDC)
-    BASE_DIR = os.getcwd()
+    BASE_DIR = os.path.split(os.path.split(os.path.abspath(__file__))[0])[0]
 
     parser = argparse.ArgumentParser(description=APP_DESCRIPTION)
     parser.add_argument(
@@ -63,6 +63,8 @@ def main():
         except Exception as exc:
             print(bcolors.FAIL + 'Could not switch to project directory {}: {}'.format(project_dir, exc) + bcolors.ENDC)
             sys.exit()
+    else:
+        sys.path.append(BASE_DIR)
 
     executer.clear_log_file()
     executer.run_official(middlebox_module_name, testing_part_1)
