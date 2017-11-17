@@ -11,14 +11,14 @@ This simple python executable helps you test your project before submitting it. 
 
 Here are a list of flags you can pass in when running the tester.
 
-| Flag            | Values            | Required                                 |
-| -------------   | :-------------:   | -----:                                   |
-| `-h`            | None              | No                                       |
-| `--part`        | `1` or `2`        | Yes                                      |
-| `--update`      | None              | only if running for first time           |
-| `--tests`       | space separated list of test names | No                      |
-| `--project-dir` | directory string  | only if running from different directory |
-| `--colorless`   | None              | No                                       |
+| Flag            | Explanation                              | Values            | Required                                 |
+| -------------   | ---------------------------------------  | ----------------  | -----                                    |
+| `-h`            | view help for each possible flag         | None              | No                                       |
+| `--part`        | specify which part of the project to test| `1` or `2`        | Yes                                      |
+| `--update`      | fetch test updates from GitHub           | None              | only if running for first time           |
+| `--tests`       | don't run all tests, only the listed ones| space separated list of test names | No                      |
+| `--project-dir` | specify where the proj3 folders are      | directory string  | only if running from different directory |
+| `--colorless`   | don't use color codes in the terminal    | None              | No                                       |
 
 ## Security Concerns
 
