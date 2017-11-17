@@ -96,4 +96,4 @@ def delete_extra_files(local_path, file_names):
                 os.remove(file_path)
                 delete_counter += 1
     if delete_counter > 0:
-        print("{} old test file(s) deleted from {}.".format(delete_counter, local_path))
+        print("{} old test file(s) deleted from: {}".format(delete_counter, local_path))

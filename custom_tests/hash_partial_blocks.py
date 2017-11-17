@@ -32,7 +32,7 @@ def compute_reduction(input_file_name, wide_area_network):
 
 def hash_partial_blocks(middlebox_module, testing_part_1):
     expected_value_1 = 0.995 #For both parts.
-    expected_value_2 = 0.99885 #For both parts.
+    expected_value_2 = 0.9985 #For both parts.
 
     middlebox1 = middlebox_module.WanOptimizer()
     middlebox2 = middlebox_module.WanOptimizer()
@@ -62,7 +62,6 @@ def hash_partial_blocks(middlebox_module, testing_part_1):
                 # This is a hack! Don't do this!
                 wide_area_network._Wan__total_bytes_sent = 0
         reduction_rate = compute_reduction(filename, wide_area_network)
-        print("Achieved reduction rate: ", reduction_rate)
         expected_value = expected_value_1 if file_id == 0 else expected_value_2
         if (reduction_rate < expected_value):
             raise Exception("Reduction ratio should be greater than " +
