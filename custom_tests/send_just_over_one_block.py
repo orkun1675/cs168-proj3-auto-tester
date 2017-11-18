@@ -1,5 +1,3 @@
-# Author: Rexana Church
-
 import os
 import sys
 
@@ -34,7 +32,10 @@ def send_just_over_one_block(middlebox_module, testing_part_1):
     client2 = client.EndHost("client2", client2_address, middlebox2)
 
     # Send a file from client 1 to client 2.
-    filename = "8500a.txt"
+    if testing_part_1:
+        filename = "8500a.txt"
+    else:
+        filename = "just_over_block_pt_2.txt"
     client1.send_file(filename, client2_address)
 
     # Make sure that the files have the same contents.
