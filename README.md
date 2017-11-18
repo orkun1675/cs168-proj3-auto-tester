@@ -4,7 +4,9 @@ This simple python executable helps you test your project before submitting it. 
 
 ## How to use?
 
-1. Make sure you have the Python library for GitHub installed: `pip install PyGithub` (or `easy_install PyGithub`)
+1. Make sure you have the Python API for GitHub installed  
+  a. using pip: `pip install PyGithub` (or `pip2 install PyGithub`)  
+  b. using anaconda: `conda install -c conda-forge pygithub `
 2. Download the executable [auto_tester.zip](https://www.dropbox.com/s/ptx91j2z174j9w5/auto_tester.zip?dl=1) and save it into your project directory
 3. Open up the terminal and run the command `python auto_tester.zip --part 1`
 
