@@ -88,7 +88,6 @@ def send_48_bytes(middlebox_module, testing_part_1):
         raise Exception("Client 1 never received a fin")
     test_utils.verify_data_sent_equals_data_received(SPECIAL_BYTES, client1_output_filename)
     os.remove(client1_output_filename)
-    print(client1_output_filename)
 
     achieved_reduction = compute_reduction(len(SPECIAL_BYTES), wide_area_network)
     expected_reduction = 0.29
