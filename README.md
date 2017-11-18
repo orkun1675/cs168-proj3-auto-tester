@@ -12,9 +12,9 @@ This simple python executable helps you test your project before submitting it. 
 
 ## Running Specific Tests
 
-By default all tests are run, but if you want to run a specific test, just list the test names when calling the auto tester. Here is an example that runs two  of the official tests:
+By default all tests are run, but if you want to run a specific test, just list the test names after the `--tests` flag when calling the auto tester. Here is an example that runs two  of the official tests:
 ```
-python auto_tester.zip --part 2 send_image_file send_one_file
+python auto_tester.zip --part 2 --tests send_image_file send_one_file
 ```
 
 ## Accepted Flags
