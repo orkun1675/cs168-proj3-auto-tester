@@ -10,6 +10,13 @@ This simple python executable helps you test your project before submitting it. 
 2. Download the executable [auto_tester.zip](https://www.dropbox.com/s/ptx91j2z174j9w5/auto_tester.zip?dl=1) and save it into your project directory
 3. Open up the terminal and run the command `python auto_tester.zip --part 1`
 
+## Running Specific Tests
+
+By default all tests are run, but if you want to run a specific test, just list the test names when calling the auto tester. Here is an example that runs two  of the official tests:
+```
+python auto_tester.zip --part 2 send_image_file send_one_file
+```
+
 ## Accepted Flags
 
 Here are a list of flags you can pass in when running the tester.
